@@ -20,7 +20,7 @@ func main() {
 	app := fiber.New()
 	app.Use(recover.New())
 	app.Use(logger.New())
-	router.SetupRoutes(app)
+	router.Setup(app)
 
 	log.Fatal(app.Listen(":" + utils.GetEnv("PORT")))
 }
