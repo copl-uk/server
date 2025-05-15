@@ -1,32 +1,22 @@
 package utils
 
 import (
+	"log"
 	"os"
 
 	"github.com/joho/godotenv"
 )
 
-func setDefaults(env string) {
-	if os.Getenv("COPLUK_ENV") == "" {
-		os.Setenv("COPLUK_ENV", env)
+func GetEnv(key string) string {
+	env := os.Getenv(key)
+	if env == "" {
+		log.Fatalf("Environment variable %s not set", key)
 	}
-	if os.Getenv("PORT") == "" {
-		os.Setenv("PORT", "8080")
-	}
+	return env
 }
 
-func SetupEnv() {
-	env := os.Getenv("COPLUK_ENV")
-	if env == "" {
-		env = "development"
-	}
-
-	if err := godotenv.Load(".env." + env); err != nil {
-		panic("Error loading .env." + env + " file")
-	}
+func LoadEnv() {
 	if err := godotenv.Load(); err != nil {
-		panic("Error loading .env file")
+		log.Fatal("Error loading .env file")
 	}
-
-	setDefaults(env)
 }
