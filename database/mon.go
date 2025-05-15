@@ -6,8 +6,8 @@ import (
 	"time"
 
 	"github.com/copl-uk/server/utils"
-	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
+	"go.mongodb.org/mongo-driver/v2/mongo"
+	"go.mongodb.org/mongo-driver/v2/mongo/options"
 )
 
 const databaseName = "db"
@@ -20,19 +20,12 @@ type mongoInstance struct {
 func newMongo() (*mongoInstance, error) {
 	uri := utils.GetEnv("MONGO_URI")
 
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	defer cancel()
-
-	client, err := mongo.Connect(ctx, options.Client().ApplyURI(uri))
+	client, err := mongo.Connect(options.Client().ApplyURI(uri))
 	if err != nil {
 		return nil, err
 	}
 
 	db := client.Database(databaseName)
-	if err := client.Ping(ctx, nil); err != nil {
-		return nil, err
-	}
-
 	if err := ensureCollections(db); err != nil {
 		return nil, err
 	}
