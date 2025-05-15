@@ -3,7 +3,7 @@ package main
 import (
 	"log"
 
-	"github.com/copl-uk/server/handlers"
+	"github.com/copl-uk/server/router"
 	"github.com/copl-uk/server/utils"
 
 	"github.com/gofiber/fiber/v2"
@@ -19,7 +19,7 @@ func main() {
 	app.Use(recover.New())
 	app.Use(logger.New())
 
-	handlers.Setup(app)
+	router.SetupRoutes(app)
 
 	log.Fatal(app.Listen(":" + utils.GetEnv("PORT")))
 }
