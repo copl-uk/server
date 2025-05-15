@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 
+	"github.com/copl-uk/server/database"
 	"github.com/copl-uk/server/router"
 	"github.com/copl-uk/server/utils"
 
@@ -14,11 +15,11 @@ import (
 func main() {
 	utils.LoadEnv()
 
-	app := fiber.New()
+	database.Setup()
 
+	app := fiber.New()
 	app.Use(recover.New())
 	app.Use(logger.New())
-
 	router.SetupRoutes(app)
 
 	log.Fatal(app.Listen(":" + utils.GetEnv("PORT")))
