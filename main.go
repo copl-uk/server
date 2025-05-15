@@ -2,7 +2,6 @@ package main
 
 import (
 	"log"
-	"os"
 
 	"github.com/copl-uk/server/handlers"
 	"github.com/copl-uk/server/utils"
@@ -12,11 +11,9 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/recover"
 )
 
-func init() {
-	utils.SetupEnv()
-}
-
 func main() {
+	utils.LoadEnv()
+
 	app := fiber.New()
 
 	app.Use(recover.New())
@@ -24,5 +21,5 @@ func main() {
 
 	handlers.Setup(app)
 
-	log.Fatal(app.Listen(":" + os.Getenv("PORT")))
+	log.Fatal(app.Listen(":" + utils.GetEnv("PORT")))
 }
